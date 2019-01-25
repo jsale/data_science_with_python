@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lesson 5: Visualizing Data - XSEDE Tutorial</title>
+    <!-- Bootstrap -->
+    <link href="assets/css/bootstrap-4.0.0.css" rel="stylesheet">
+	<link href="assets/css/prism_coy/prism.css" rel="stylesheet" type="text/css">
+
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+       <a class="navbar-brand" href="#">Data Science With Python</a>
+       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+       <span class="navbar-toggler-icon"></span>
+       </button>
+       <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+             <li class="nav-item active">
+                <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+             </li>
+             <li class="nav-item">
+                <a class="nav-link" href="https://www.xsede.org">XSEDE</a>
+             </li>
+             <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Lessons
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                   <a class="dropdown-item" href="1.html">Lesson 1</a>
+                   <a class="dropdown-item" href="2.html">Lesson 2</a>
+                   <a class="dropdown-item" href="3.html">Lesson 3</a>
+                   <a class="dropdown-item" href="4.html">Lesson 4</a>
+                   <a class="dropdown-item" href="5.html">Lesson 5</a>
+                   <a class="dropdown-item" href="6.html">Lesson 6</a>
+                   <a class="dropdown-item" href="7.html">Lesson 7</a>
+                   <a class="dropdown-item" href="8.html">Lesson 8</a>
+                   <div class="dropdown-divider"></div>
+                   <a class="dropdown-item" href="#"></a>
+                </div>
+             </li>
+          </ul>
+       </div>
+    </nav>
+
+    <div class="jumbotron jumbotron-fluid text-center">
+       <h1 class="display-4">Data Science with Python</h1>
+       <p class="lead">Working with large datasets using Python, Pandas, Matplotlib, and other data science tools.</p>
+       <hr class="my-4">
+    </div>
+    <div class="container">
+       <div class="row text-left">
+		   <div class="col-lg-12 offset-lg-0">
+		     <h1>Lesson 5: Visualizing Data</h1>
+		     <h3>After this lesson you will be able to: </h3>
+             <ul>
+               <li>Provide a review of visualization principles and practices and differentiate between them</li>
+               <li>Apply pandas and matplotlib to visualize tweet frequency distributions</li>
+               <ul>
+                 <li>Explain the process of collecting Twitter data</li>
+                 <li>Read and write Twitter data in JSON format</li>
+                 <li>Filter Twitter data</li>
+                 <li>Perform basic data science analytics</li>
+                 <li>Plot time series of Twitter data</li>
+                 <li>Plot graph networks of Twitter data</li>
+                 <li>Perform simple graph analytics on Twitter data</li>
+               </ul>
+               <li>Apply networkx to visualize social networks</li>
+               <li>Generate a scatterplot matrix of multivariate data</li>
+               <li>Generate a 'heat map' of multivariate data</li>
+               <li>Create an interactive visualization using Bokeh (optional)             </li>
+             </ul>
+             <p>For This Lesson You Will Need...</p>
+             <ul>
+               <li>Python 2.7 or later</li>
+               <li>The following packages:
+                 <ul>
+                   <li>pandas </li>
+                   <li>datetime </li>
+                   <li>matplotlib</li>
+                   <li>seaborn</li>
+                 </ul>
+               </li>
+             </ul>
+             <p>This lesson is supported by the content at  the following Github repository: </p>
+             <p><a href="https://github.com/jsale/data_science_with_python">https://github.com/jsale/data_science_with_python</a></p>
+             <h2>5.1: Using Seaborn to Visualize the History of Baseball Batting</h2>
+             <p>Seaborn is a powerful data science  visualization library based on matplotlib which offers a higher-level interface  supporting a wide range of tools to create compelling, informative data  visualizations. In this example, we will use a scatterplot matrix for what  Seaborn refers to as a &lsquo;PairGrid&rsquo; to visualize correlations between pairs of  batting statistics over time by year. </p>
+             <h3>5.1.1: Scatterplot Matrix Using a Seaborn 'PairGrid'</h3>
+             <p>First, we will define some variables for </p>
+		     <pre><code class="language-python">batting_by_year = batting.groupby('yearID').sum().reset_index()
+hit_vars = ['1B', '2B', '3B', 'HR', 'SO', 'BB']</code></pre>
+             <p>Now lets generate a scatterplot matrix so we can easily compare pairs of variables for all batting data. </p>
+             <p>&nbsp;</p>
+		     <pre><code class="language-python">g = sns.PairGrid(batting_by_year, vars=hit_vars, hue='yearID', palette='Blues')
+g = g.map_diag(plt.hist, edgecolor="w")
+g = g.map_offdiag(plt.scatter, edgecolor="w", s=40)</code></pre>
+             <p>This process is computationally intensive and may require some time for the plot to be generated. It should resemble the image below: </p>
+             <p><img src="assets/images/batting_scatterplot_matrix_seaborn_pairgrid.png" width="728" height="720" alt=""/></p>
+             <h2>5.1.2 The correlation of hitting statistics</h2>
+             <p>Next, let's generate a heat map of hitting statistics to get an idea of how batting stats are correlated with eachother. </p>
+             <pre><code class="language-python">sns.heatmap(batting_by_year[hit_vars].corr(), annot=True)</code></pre>
+			   <p>The resulting heat map should resemble the image shown below:</p>
+			   <p><img src="assets/images/hitting_correlation_heatmap.png" width="349" height="252" alt=""/></p>
+			   <p>&nbsp;</p>
+             <h2>5.2: Twitter Data Visualization Using Pandas and Matplotlib
+               </p>
+             </h2>
+             <p>You are probably already familiar with the  Twitter social network. Twitter is a network built on a messaging system which  allows people to send and receive messages consisting of fewer than 280  characters (and attached images) and other limited types of metadata. It has  been used effectively as a near real-time communications tool in numerous  global social events. Perhaps its greatest strength is that Twitter also  provides an API which allows anyone to collect large amounts of data and  perform a wide range of analyses to better understand these networks. This strength  can also be a weakness, introducing vulnerabilities to &lsquo;bots&rsquo; or &lsquo;state-backed&rsquo;  accounts which are used to spread disinformation in critical ways. </p>
+             <p>In these lessons, you  will perform graph network analysis using networkx, and you  will learn how to export to other graph network analysis and visualization  applications such as Gephi, Neo4j, and GraphX. </p>
+             <h3>5.2.1 Tweet Frequency Counts, Histograms, or &ldquo;Binning&rdquo; a Dataset</h3>
+             <p>Next, we will perform basic analysis by counting  how many tweets occur in 5 minute epochs over the course of two weeks. Let&rsquo;s  get started by reading in data from our dataset collected on the #nerd,  converting the tweet creation date to a Pandas dataframe, and performing a  frequency count on the data using the Pandas &lsquo;groupby&rsquo; function to get an  overall sense of the temporal distribution of the tweets. Here is the Jupyter  Notebook we will be using for this: </p>
+             <p><a href="https://drive.google.com/open?id=17RhDiAHCFRM8oAhT1TiswSZzatMIss1y">https://drive.google.com/open?id=17RhDiAHCFRM8oAhT1TiswSZzatMIss1y</a></p>
+             <p>Below is a plot of the resulting tweet frequency  distribution using matplotlib. </p>
+             <p><img border="0" width="560" height="187" src="assets/images/image1.png" alt="Tweet frequency count using matplotlib"> <br>
+             </p>
+             <p>We can clearly see a daily cycle of increasing  and decreasing activity over the two-week period. </p>
+             <p>We also see that there is never very much  activity at any one time. The most tweets we observe in a 5-minute period are  ~30 tweets near the end of the time series. It is not uncommon to see that many  tweets in a single second for some of the more active hashtags. Twitter sets a  limit of 50 tweets per second for its Streaming API and it will send a JSON  object with a &lsquo;limit reached&rsquo; warning which must be accounted for in your  filtering prior to analysis. </p>
+             <h3><br>
+               5.2.2 Top 20 Retweeted Tweets</h3>
+             <p>Extending this exercise a bit further, it may be  useful to create an ordered list of the most frequently retweeted tweets in the  dataset in order to get a better idea of the general nature of tweet content  which might be considered typical of the #nerd hashtag. </p>
+             <p>To do this, we simply use the pandas groupby  function and group by the tweet date/time stamp using the tweet &lsquo;created_at&rsquo;  parameter. </p>
+             <p>&nbsp;</p>
+             <h2>5.3: Using Bokeh to create an interactive visualization for  Baseball data</h2>
+			<p>&nbsp;</p>
+		   </div>
+       </div>
+       <br>
+       <hr>
+       <div class="row">
+          <div class="text-center col-lg-6 offset-lg-3">
+             <h4>--</h4>
+             <p>Copyright &copy; 2019 XSEDE</p>
+          </div>
+       </div>
+    </div>
+	<script type="text/javascript" src="assets/js/prism_coy/prism.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+    <script src="assets/js/jquery-3.2.1.min.js"></script>
+
+    <!-- Include all compiled plugins (below), or include individual files as needed --> 
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap-4.0.0.js"></script>
+  </body>
+</html>

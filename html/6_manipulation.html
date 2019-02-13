@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 6: Data Manipulation - XSEDE Tutorial</title>
+<!-- Bootstrap -->
+<link href="assets/css/bootstrap-4.0.0.css" rel="stylesheet">
+<link href="assets/css/prism_coy/prism.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <a class="navbar-brand" href="#">Data Science With Python</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active"> <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a> </li>
+      <li class="nav-item"> <a class="nav-link" href="https://www.xsede.org">XSEDE</a> </li>
+      <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Lessons </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown"> <a class="dropdown-item" href="1.html">Lesson 1</a> <a class="dropdown-item" href="2.html">Lesson 2</a> <a class="dropdown-item" href="3.html">Lesson 3</a> <a class="dropdown-item" href="4.html">Lesson 4</a> <a class="dropdown-item" href="5.html">Lesson 5</a> <a class="dropdown-item" href="6.html">Lesson 6</a> <a class="dropdown-item" href="7.html">Lesson 7</a> <a class="dropdown-item" href="8.html">Lesson 8</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#"></a> </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="jumbotron jumbotron-fluid text-center">
+  <h1 class="display-4">Data Science with Python</h1>
+  <p class="lead">Working with large datasets using Python, Pandas, Matplotlib, and other data science tools.</p>
+  <hr class="my-4">
+</div>
+<div class="container">
+  <div class="row text-left">
+    <div class="col-lg-12 offset-lg-0">
+      <h1>Lesson 6: Data Manipulation</h1>
+      <h3>After these lessons you will be able to:      </h3>
+      <ul>
+      <li>TBD</li>
+      </ul>
+      <p>For This Lesson You Will Need...</p>
+      <ul>
+        <li>Python 2.7 or later</li>
+        <li>The following packages:
+          <ul>
+            <li>pandas </li>
+            <li>scikit-learn</li>
+            <li>tensorflow</li>
+            <li>keras</li>
+            <li>caffe</li>
+            <li>pytorch </li>
+          </ul>
+        </li>
+      </ul>
+      <p>These lessons are supported by the content at  the following Github repository: </p>
+      <p><a href="https://github.com/jsale/data_science_with_python">https://github.com/jsale/data_science_with_python</a></p>
+      <h2>6.1: Working With The Lahman Baseball Database</h2>
+      <h3>6.1.1 Adding Derived Data</h3>
+      <p>One of the interesting limits to the LBD  Batting table is the lack of a specific statistic for Single Base Hits. This  can be derived by summing the Doubles (2B), Triples (3B), and Home Runs (HR)  and subtracting this sum from the total number of Hits. </p>
+      <pre><code class="language-python">batting['1B'] = batting['H'] - batting['2B'] -  batting['3B'] - batting['HR']</code></pre>
+      <p>This may also be performed for the 'Teams'  table. </p>
+      <p>In Lesson 4, Statistics with Data, we perform some analysis on this dataset using pandas, and in Lesson 5, we create some examples of how to visualize the data to gain additional insight into underlying patterns.      </p>
+      <h2>6.2: Working With Twitter Data    
+        <br />
+    </h2>
+      <h3 dir="ltr">6.2.1 Simplify the Dataset By Extracting a Subset of Parameters from JSON and Saving as CSV or PKL </h3>
+      <p>The standard format for results returned from a  Twitter API search is JSON (JavaScript Object Notation). For large amounts of Twitter data it can be useful to reduce the size of the data by extracting a subset and re-saving it in a CSV format. We will use the Python csv and json  packages to convert the data from JSON to CSV. </p>
+      <p>In this example, we reduce the dataset from ~70 Mb down to ~5 Mb, and we will save two files, one containing basic tweet parameters and the other containing tweet text. This is probably not necessary for such a small dataset but it becomes useful when working with much larger datasets consisting of millions of tweets.</p>
+      <p>The parameters we choose to retain in the CSV include the following, which is by no means comprehensive:</p>
+      <ul>
+        <li>tweet_id</li>
+        <li>tweet_created_at</li>
+        <li>language</li>
+        <li>user_screen_name</li>
+        <li>user_created_at</li>
+        <li>user_id</li>
+        <li>followers_count</li>
+        <li>friends_count</li>
+        <li>time_zone</li>
+        <li>utc_offset</li>
+        <li>retweeted_status</li>
+        <li>retweet_id</li>
+        <li>retweet_user_screen_name</li>
+        <li>retweet_user_id</li>
+      </ul>
+      <h3>Import Packages</h3>
+      <pre><code class="language-python"># Load packages
+import os
+import csv
+import sys
+import json
+import datetime
+from pprint import pprint</code></pre>
+      <h3>Read JSON and Save As CSV</h3>
+      <p>Now we read the data in and re-save it as a CSV format file. </p>
+      <pre><code class="language-python"># Print start time at start and end time at end
+print("Start:" + str(datetime.datetime.now()))
+
+# Open CSV output files for writing
+output_dir = "csv/"
+hashtag = "nerd"
+
+# Open main twitter data CSV file and write header row
+main_output_file = output_dir + hashtag + "_main.csv"
+f_main = open(main_output_file, 'w', newline='')
+mainrowwriter = csv.writer(f_main, delimiter=',')
+main_outputstring = ['tweet_id','tweet_created_at','language','user_screen_name','user_created_at','user_id','followers_count','friends_count','time_zone','utc_offset','retweeted_status','retweet_id','retweet_user_screen_name','retweet_user_id']
+mainrowwriter.writerow(main_outputstring)
+
+# Open twitter text data CSV file and write header row
+text_output_file = output_dir + hashtag + "_text.csv"
+f_text = open(text_output_file, 'w', errors='ignore', newline='')
+textrowwriter = csv.writer(f_text, delimiter=',')
+text_outputstring = ['tweet_id','text']
+textrowwriter.writerow(text_outputstring)
+
+# Define variables
+inc = 0
+val = 0
+val_inc = 0
+dir = 'tweet_data/'
+filename = 'nerd.json'
+
+with open(dir + filename, 'r') as f:
+    print("Working on file:" + filename)
+    data = json.load(f)
+    for tweet in data:
+        if 'user' in tweet:
+            
+            # Set standard variables equal to tweet data
+            tweet_id = tweet['id']
+            tweet_created_at = tweet['created_at']
+            text = tweet['text']
+            language = tweet['lang']
+            user_screen_name = tweet['user']['screen_name']
+            user_created_at = tweet['user']['created_at']
+            user_id = tweet['user']['id']
+            followers_count = tweet['user']['followers_count']
+            friends_count = tweet['user']['friends_count']
+            utc_offset = tweet['user']['utc_offset']
+            time_zone = tweet['user']['time_zone']
+            
+            # Check if a retweet else original tweet
+            if 'retweeted_status' in tweet:
+                retweeted_status = 1
+                retweet_id = tweet['retweeted_status']['id']
+                retweet_user_screen_name = tweet['retweeted_status']['user']['screen_name']
+                retweet_user_id = tweet['retweeted_status']['user']['id']
+            else:
+                retweeted_status = 0
+                retweet_id = "None"
+                retweet_user_screen_name = "None"
+                retweet_user_id = "None"
+            
+            # Write to main output file
+            main_outputstring = [str(tweet_id), tweet_created_at, language, user_screen_name, user_created_at, str(user_id), str(followers_count), str(friends_count), time_zone, utc_offset, str(retweeted_status), str(retweet_id), retweet_user_screen_name, str(retweet_user_id)] 
+            mainrowwriter.writerow(main_outputstring)
+            
+            # Write to text output file
+            text_outputstring = [str(tweet_id), text]
+            textrowwriter.writerow(text_outputstring)
+            
+            # Increment variables to track progress, mostly for very large files
+            inc += 1
+            val_inc += 1
+            if val_inc > 10000:
+                val = val + 10000
+                print(str(val))
+                val_inc = 0
+
+# Close all files
+f.close()
+f_main.close()
+f_text.close()
+print("End:" + str(datetime.datetime.now()))</code></pre>
+      <h2></h2>
+      <h3 dir="ltr">Save As Pandas Pickle File</h3>
+      <p dir="ltr">Finally, we read in the CSV file and convert the timestamp to a Pandas timestamp using the to_datetime function. </p>
+      <pre>dftweet = pd.read_csv('csv/climatechange_main.csv')<br>dftweet.tweet_created_at = pd.to_datetime(dftweet.tweet_created_at)<br>dftweet.head()</pre>
+      <p dir="ltr">Then we resave as a Pandas .pkl (Pickle) file. </p>
+      <pre>dftweet.to_pickle('pkl/climatechange_main.pkl')</pre>
+      <p>Now we have our data in a format which makes it much easier to analyze. </p>
+<p></p>
+    </div>
+  </div>
+  <br>
+  <hr>
+  <div class="row">
+    <div class="text-center col-lg-6 offset-lg-3">
+      <h4>--</h4>
+      <p>Copyright &copy; 2019 XSEDE</p>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="assets/js/prism_coy/prism.js"></script> 
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="assets/js/jquery-3.2.1.min.js"></script> 
+
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<script src="assets/js/popper.min.js"></script> 
+<script src="assets/js/bootstrap-4.0.0.js"></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 2: The Python Ecosystem for Data Science - XSEDE Tutorial</title>
+<!-- Bootstrap -->
+<link href="assets/css/bootstrap-4.0.0.css" rel="stylesheet">
+<link href="assets/css/prism_coy/prism.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <a class="navbar-brand" href="#">Data Science With Python</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active"> <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a> </li>
+      <li class="nav-item"> <a class="nav-link" href="https://www.xsede.org">XSEDE</a> </li>
+      <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Lessons </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown"> <a class="dropdown-item" href="1.html">Lesson 1</a> <a class="dropdown-item" href="2.html">Lesson 2</a> <a class="dropdown-item" href="3.html">Lesson 3</a> <a class="dropdown-item" href="4.html">Lesson 4</a> <a class="dropdown-item" href="5.html">Lesson 5</a> <a class="dropdown-item" href="6.html">Lesson 6</a> <a class="dropdown-item" href="7.html">Lesson 7</a> <a class="dropdown-item" href="8.html">Lesson 8</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#"></a> </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="jumbotron jumbotron-fluid text-center">
+  <h1 class="display-4">Data Science with Python</h1>
+  <p class="lead">Working with large datasets using Python, Pandas, Matplotlib, and other data science tools.</p>
+  <hr class="my-4">
+</div>
+<div class="container">
+  <div class="row text-left">
+    <div class="col-lg-12 offset-lg-0">
+      <h1>Lesson 2: The Python Ecosystem For Data Science</h1>
+      <h3>After these lessons you will be able to:      </h3>
+      <ul>
+      <li dir="ltr">Explain differences between versions of the Python language as they pertain to data science</li>
+      <li>List some examples of commonly-used Python libraries and their purpose(s)        </li>
+        <li dir="ltr">
+          <p dir="ltr">Explain important factors which must be taken into account which impact Python installations and distributions in the various XSEDE systems and environments</p>
+        </li>
+      </ul>
+      <p>These lessons are supported by the content at  the following Github repository: </p>
+      <p><a href="https://github.com/jsale/data_science_with_python">https://github.com/jsale/data_science_with_python</a></p>
+      <h2>2.1: The Python Language and Libraries      </h2>
+      <p>The role of compiled libraries for scientific computing...      </p>
+      <p></p>
+<h2>2.2 Python Installations and Distributions</h2>
+<p>TBD</p>
+<h2>2.3 Relevant Libraries and Tools for Accessing,  Importing and Manipulating Data</h2>
+<h3>2.3.1 NumPy</h3>
+<p>NumPy is the cornerstone of the Python  scientific computing ecosystem, providing support for multidimensional arrays  (objects of type ndarray) that form the basis of much data representation in  Python. <a href="https://cvw.cac.cornell.edu/python/numpy" target="new">Learn more about Numpy...</a></p>
+<p></p>
+<h3>2.3.2 Pandas</h3>
+<p>Pandas is an extremely powerful library for  manipulating tabular data, of the sort that one typically finds in a  spreadsheet or a record-oriented flat file. </p>
+<p><a href="https://pandas.pydata.org/" target="new">Learn more about Pandas</a>. </p>
+<h3>2.3.3 HDF5</h3>
+<p>[from Wikipedia] The Hierarchical Data Format (HDF) is designed to store and organize large amounts of data. Originally developed at the National Center for Supercomputing Applications, it is supported by The HDF Group, a non-profit corporation whose mission is to ensure continued development of HDF5 technologies and the continued accessibility of data stored in HDF.
+  
+  HDF is supported by many commercial and non-commercial software platforms, including  Python.</p>
+<p><a href="https://www.hdfgroup.org/solutions/hdf5/" target="new">Learn more about HDF5...</a></p>
+<h3>2.3.4 Dask</h3>
+<p>Dask is a flexible library for parallel computing in Python.
+  
+  Dask is composed of two parts:
+  
+  Dynamic task scheduling optimized for computation. This is similar to Airflow, Luigi, Celery, or Make, but optimized for interactive computational workloads.
+  “Big Data” collections like parallel arrays, dataframes, and lists that extend common interfaces like NumPy, Pandas, or Python iterators to larger-than-memory or distributed environments. These parallel collections run on top of dynamic task schedulers.</p>
+<p><a href="https://docs.dask.org/en/latest/" target="new">Learn more about Dask...</a></p>
+<h3>2.3.5 SQLAlchemy</h3>
+<p>SQLAlchemy is the Python SQL toolkit and Object Relational Mapper that gives application developers the full power and flexibility of SQL. It provides a full suite of well known enterprise-level persistence patterns, designed for efficient and high-performing database access, adapted into a simple and Pythonic domain language. </p>
+<p><a href="https://www.sqlalchemy.org/" target="new">Learn more about SQLAlchemy...</a></p>
+<h3>2.3.6 SQLite3</h3>
+<p>A SQLite database works well in devices that must operate without expert human support because it requires no administration. SQLite is not directly comparable to client/server SQL database engines such as MySQL, Oracle, PostgreSQL, or SQL Server since SQLite is trying to solve a different problem.</p>
+<p>Client/server SQL database engines strive to implement a shared repository of enterprise data. They emphasize scalability, concurrency, centralization, and control. SQLite strives to provide local data storage for individual applications and devices. SQLite emphasizes economy, efficiency, reliability, independence, and simplicity. SQLite does not compete with client/server databases. SQLite competes with fopen().</p>
+<p><a href="https://www.sqlite.org/about.html" target="new">Learn more about SQLite...</a></p>
+<h3>2.3.7 Scikit-image</h3>
+<p>Scikit-image is a collection of algorithms for image processing. </p>
+<p>Learn more about Scikit-image...</p>
+<h3>2.3.8 PIL-Pillow</h3>
+<p>The Python Image Library (PIL), the more recent version (or fork) of which is called &quot;Pillow&quot;, is an image processing library for Python. </p>
+<p><a href="https://pillow.readthedocs.io/en/stable/" target="new">Learn more about Pillow...</a></p>
+<p>&nbsp;</p>
+<p></p>
+<p></p>
+    </div>
+  </div>
+  <br>
+  <hr>
+  <div class="row">
+    <div class="text-center col-lg-6 offset-lg-3">
+      <h4>--</h4>
+      <p>Copyright &copy; 2019 XSEDE</p>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="assets/js/prism_coy/prism.js"></script> 
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="assets/js/jquery-3.2.1.min.js"></script> 
+
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<script src="assets/js/popper.min.js"></script> 
+<script src="assets/js/bootstrap-4.0.0.js"></script>
+</body>
+</html>

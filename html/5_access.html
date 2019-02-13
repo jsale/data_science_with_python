@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 5: Accessing Data - XSEDE Tutorial</title>
+<!-- Bootstrap -->
+<link href="assets/css/bootstrap-4.0.0.css" rel="stylesheet">
+<link href="assets/css/prism_coy/prism.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <a class="navbar-brand" href="#">Data Science With Python</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active"> <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a> </li>
+      <li class="nav-item"> <a class="nav-link" href="https://www.xsede.org">XSEDE</a> </li>
+      <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Lessons </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown"> <a class="dropdown-item" href="1.html">Lesson 1</a> <a class="dropdown-item" href="2.html">Lesson 2</a> <a class="dropdown-item" href="3.html">Lesson 3</a> <a class="dropdown-item" href="4.html">Lesson 4</a> <a class="dropdown-item" href="5.html">Lesson 5</a> <a class="dropdown-item" href="6.html">Lesson 6</a> <a class="dropdown-item" href="7.html">Lesson 7</a> <a class="dropdown-item" href="8.html">Lesson 8</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#"></a> </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="jumbotron jumbotron-fluid text-center">
+  <h1 class="display-4">Data Science with Python</h1>
+  <p class="lead">Working with large datasets using Python, Pandas, Matplotlib, and other data science tools.</p>
+  <hr class="my-4">
+</div>
+<div class="container">
+  <div class="row text-left">
+    <div class="col-lg-12 offset-lg-0">
+      <h1>Lesson 5: Data Access and Input</h1>
+      <h3>After these lessons you will be able to:      </h3>
+      <ul>
+      <li> Explain what machine learning is and why it is part of the repertoire of data science methods</li>
+      <li>Configure machine learning tools and environments</li>
+        <li>Apply standard machine learning methods to create a model which performs image recognition of flower types using the <a href="http://image-net.org/explore.php?wnid=n11669921" target="new">flower image database from ImageNet</a>.</li>
+      </ul>
+      <p>For This Lesson You Will Need...</p>
+      <ul>
+        <li>Python 2.7 or later</li>
+        <li>The following packages:
+          <ul>
+            <li>pandas </li>
+            <li></li>
+          </ul>
+        </li>
+      </ul>
+      <p>These lessons are supported by the content at  the following Github repository: </p>
+      <p><a href="https://github.com/jsale/data_science_with_python">https://github.com/jsale/data_science_with_python</a></p>
+      <h2>Series and Dataframes in pandas (and relation to numpy arrays)</h2>
+      <p>&nbsp;</p>
+      <h2>Dataframes for baseball data</h2>
+      <p>&nbsp;</p>
+      <h2>Building a sql database from dataframes</h2>
+      <div class="col-lg-3 offset-lg-0">
+        <pre><code class="language-python">
+def write_all_tables_to_sqlite(dfs, sql_filename):
+    engine = create_engine('sqlite:///{}'.format(sql_filename))
+    for table, df in dfs.items():
+        df.to_sql(table, con=engine, index=False)
+    engine.dispose()
+    
+sqlite_filename = 'bbdb.sqlite'
+try:
+    os.remove(sqlite_filename)
+except FileNotFoundError:
+    pass
+write_all_tables_to_sqlite(bbdfs, sqlite_filename)
+</code></pre></div>
+      <p>&nbsp;</p>
+      <h2>Cleaning messy data (wildfires)</h2>
+      <p>&nbsp;</p>
+      <h2>Twitter API</h2>
+      <h3>4.2.1 Get Authenticated For the Twitter API</h3>
+      <p><a href="https://developer.twitter.com/en/docs/basics/authentication/guides/access-tokens.html">https://developer.twitter.com/en/docs/basics/authentication/guides/access-tokens.html</a></p>
+      <h3><br>
+        4.2.2 Create a Twitter Application</h3>
+      <p><a href="https://developer.twitter.com/en/docs/basics/apps">https://developer.twitter.com/en/docs/basics/apps</a></p>
+      <p>Once you have created your application and have  your authentication keys and tokens, you will need to install the tweepy  package in Python. The command you use depends on how you have configured your  Python environment. If you are using Anaconda and prefer to install packages  with conda, use something like the following command: </p>
+      <pre><code class="language-bash">conda install -c conda-forge tweepy </code></pre>
+      </p>
+      <p>If you are just using straight Python, use the  following command: </p>
+      <pre><code class="language-bash">pip install tweepy </code></pre>
+      <p>A similar process applies for any other package  you might find you need. Learn more about Python packages in the <a href="https://cvw.cac.cornell.edu/pythonintro/">CVW Intro  to Python tutorial</a>.</p>
+      <h3><br>
+        4.2.3 Using the Twitter Streaming API</h3>
+      <p>Most users of XSEDE systems already have  collected their Twitter data and simply want to analyze it, but we will walk  through a simple example of how to collect streaming tweet data that is  collected using a filter, such as containing a specific hashtag. </p>
+      <p>Here is a simple example of how to collect  tweets with hashtag #nerd, print the tweet data and save it to a file. </p>
+      <p><a href="https://drive.google.com/open?id=1WpcYPs-yXUOAEqeLjgJaAgzVLiXIlrs9">https://drive.google.com/open?id=1WpcYPs-yXUOAEqeLjgJaAgzVLiXIlrs9</a></p>
+      <p>
+      <pre><code class="language-python"># -*- coding: utf-8 -*-
+"""
+Created on Sat Oct 27 08:59:27 2018
+
+@author: XSEDE
+"""
+
+import re
+import datetime
+from __future__ import absolute_import, print_function
+
+from tweepy.streaming import StreamListener
+from tweepy import OAuthHandler
+from tweepy import Stream
+
+# Go to http://apps.twitter.com and create an app.
+# The consumer key and secret will be generated for you after
+consumer_key="your_consumer_key"
+consumer_secret="your_consumer_secret"
+
+# After the step above, you will be redirected to your app's page.
+# Create an access token under the the "Your access token" section
+access_token="your_access_token"
+access_token_secret="your_access_token_secret"
+
+# Create variables to use for output file and tweet filter
+hashtag = "maga"
+date_time_temp = str(datetime.datetime.now())
+
+# Replace all characters except letters and numbers with "_" for filename
+current_date_time = re.sub('[^a-zA-Z0-9]','_', date_time_temp)
+file_out = open(hashtag + "_" + current_date_time + ".json", 'a')
+
+# Define the Stream Listener
+class StdOutListener(StreamListener):
+    """ A listener handles tweets that are received from the stream.
+    This is a basic listener that just prints received tweets to stdout.
+
+    """
+    def on_data(self, data):
+        print(data) # Print output to console
+        file_out.write(data) # Write output to file
+        return True
+
+    def on_error(self, status):
+        print(status)
+
+# Run the main program and collect tweets with hashtag "nerd"
+if __name__ == '__main__':
+    l = StdOutListener()
+    auth = OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+
+    stream = Stream(auth, l)
+    stream.filter(track=['nerd'])
+file_out.close()</code></pre>
+      </p>
+      <h3></h3>
+      <p>&nbsp;</p>
+      <h2>Other short examples?</h2>
+      <p>&nbsp;</p>
+      <p></p>
+<p></p>
+    </div>
+  </div>
+  <br>
+  <hr>
+  <div class="row">
+    <div class="text-center col-lg-6 offset-lg-3">
+      <h4>--</h4>
+      <p>Copyright &copy; 2019 XSEDE</p>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="assets/js/prism_coy/prism.js"></script> 
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="assets/js/jquery-3.2.1.min.js"></script> 
+
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<script src="assets/js/popper.min.js"></script> 
+<script src="assets/js/bootstrap-4.0.0.js"></script>
+</body>
+</html>

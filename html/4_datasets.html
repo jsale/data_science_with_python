@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 4: Introducing the Datasets - XSEDE Tutorial</title>
+<!-- Bootstrap -->
+<link href="assets/css/bootstrap-4.0.0.css" rel="stylesheet">
+<link href="assets/css/prism_coy/prism.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <a class="navbar-brand" href="#">Data Science With Python</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active"> <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a> </li>
+      <li class="nav-item"> <a class="nav-link" href="https://www.xsede.org">XSEDE</a> </li>
+      <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Lessons </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown"> <a class="dropdown-item" href="1.html">Lesson 1</a> <a class="dropdown-item" href="2.html">Lesson 2</a> <a class="dropdown-item" href="3.html">Lesson 3</a> <a class="dropdown-item" href="4.html">Lesson 4</a> <a class="dropdown-item" href="5.html">Lesson 5</a> <a class="dropdown-item" href="6.html">Lesson 6</a> <a class="dropdown-item" href="7.html">Lesson 7</a> <a class="dropdown-item" href="8.html">Lesson 8</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#"></a> </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="jumbotron jumbotron-fluid text-center">
+  <h1 class="display-4">Data Science with Python</h1>
+  <p class="lead">Working with large datasets using Python, Pandas, Matplotlib, and other data science tools.</p>
+  <hr class="my-4">
+</div>
+<div class="container">
+  <div class="row text-left">
+    <div class="col-lg-12 offset-lg-0">
+      <h1>Lesson 4: Introducing the Datasets</h1>
+      <h3>After these lessons you will be able to:</h3>
+      <ul>
+      <li> Explain what machine learning is and why it is part of the repertoire of data science methods</li>
+      <li>Configure machine learning tools and environments</li>
+        <li>Apply standard machine learning methods to create a model which performs image recognition of flower types using the <a href="http://image-net.org/explore.php?wnid=n11669921" target="new">flower image database from ImageNet</a>.</li>
+      </ul>
+      <p>For This Lesson You Will Need...</p>
+      <ul>
+        <li>Python 2.7 or later</li>
+        <li>The following packages:
+          <ul>
+            <li>pandas </li>
+            <li>scikit-learn</li>
+            <li>tensorflow</li>
+            <li>keras</li>
+            <li>caffe</li>
+            <li>pytorch </li>
+          </ul>
+        </li>
+      </ul>
+      <p>These lessons are supported by the content at  the following Github repository: </p>
+      <p><a href="https://github.com/jsale/data_science_with_python">https://github.com/jsale/data_science_with_python</a></p>
+      <h2>4.1 Baseball Statistical Historical Data</h2>
+      <h3>4.1.1 Download the Data</h3>
+      <p>Our first set of practical examples  will use the Lahman Baseball Database (LBD). You&nbsp; can learn more about the LBD  and download the data here:</p>
+      <p><u><a href="http://www.seanlahman.com/baseball-archive/statistics/">http://www.seanlahman.com/baseball-archive/statistics/</a></u></p>
+      <h3>4.1.2 Import Packages</h3>
+      <p>Our first step, once we have downloaded the  data, is to identify the location of the sub-directory containing the core  CSV-format files. In this example we put them in a 'baseballdatabank/core/'  folder relative to our scripts. </p>
+      <p>To follow along with these lessons, you will  need to import these packages:</p>
+      <div class="col-lg-3 offset-lg-0"><pre><code class="language-python">import pandas as pd
+import glob, os
+import seaborn as sns
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+from sqlalchemy import create_engine</code></pre></div>
+      <h3>4.1.3 Import Data into Pandas DataFrames</h3>
+      <p>Next, we define a function to read all of the  files into a single pandas dataframe, dfs, and then run it on the above folder. </p>
+      <pre><code class="language-python">def read_all_databank_core_csv(directory):
+    """
+    read all csv files in the specified baseball databank directory and
+    populate a dictionary storing each of the tables keyed to its name
+    """
+    dfs = {}
+    files = glob.glob('{}/*.csv'.format(directory))
+    for f in files:
+        d, name = os.path.split(f)
+        table = os.path.splitext(name)[0]
+        df = pd.read_csv(f)
+        dfs[table] = df
+    return dfs
+
+bbdfs = read_all_databank_core_csv('baseballdatabank/core')
+</code></pre>
+      <p>To keep things simple, we will extract three  primary tables from our dataframe, 'Batting', 'Pitching', and 'Teams.' </p>
+      <pre><code class="language-python"># extract a few for further processing
+batting = bbdfs['Batting']
+pitching = bbdfs['Pitching']
+teams = bbdfs['Teams']</code></pre>
+      <h3>4.1.4 Let's Take a Peek</h3>
+      <p>Run the following command to view the first 5  rows of data from the 'Batting' table:</p>
+      <pre><code class="language-python">batting.head()</code></pre>
+      <p>We see that, by default, a Jupyter Notebook  does not display all columns of data with the head() command if there are too  many columns to include is a single cell width. Notice the '...' between the  '2B' and 'SB' columns. We can list the columns for one of our tables with  something like:</p>
+      <pre><code class="language-python">pitching.columns</code></pre>
+      <h3>&nbsp;</h3>
+      <h2>4.2 Twitter</h2>
+      <p>You are probably already familiar with the  Twitter social network. Twitter is a network built on a messaging system which  allows people to send and receive messages consisting of fewer than 280  characters (and attached images) and other limited types of metadata. It has  been used effectively as a near real-time communications tool in numerous  global social events. Perhaps its greatest strength is that Twitter also  provides an API which allows anyone to collect large amounts of data and  perform a wide range of analyses to better understand these networks. This strength  can also be a weakness, introducing vulnerabilities to 'bots' or 'state-backed'  accounts which are used to spread disinformation in critical ways. </p>
+      <p>In these lessons, you will learn how to use the  Twitter Search API and the Streaming API to collect tweets using the Python  Tweepy library. Then, in Lesson 5, you will perform graph network analysis using networkx, and you  will learn how to export to other graph network analysis and visualization  applications such as Gephi, Neo4j, and GraphX. </p>
+      <p>Before you can start collecting Twitter data,  you will need to create a developer account, get authenticated, and create a  Twitter application. In Lesson 5 we provide a brief description of the process with links to  more information. To get an idea how much data is in a single tweet, below is an example of a tweet in JSON format: </p>
+      <p><a href="https://drive.google.com/open?id=1IReYbFmqzI4ZsOInvVeIwSUKT3k0NERM7MChBdmOe6k">https://drive.google.com/open?id=1IReYbFmqzI4ZsOInvVeIwSUKT3k0NERM7MChBdmOe6k</a></p>
+      <pre><code class="language-json">{'contributors': None,
+ 'coordinates': None,
+ 'created_at': 'Sat Jul 14 17:02:02 +0000 2018',
+ 'entities': {'hashtags': [{'indices': [77, 88], 'text': 'motoz3play'},
+                           {'indices': [112, 124], 'text': 'electronics'},
+                           {'indices': [125, 133], 'text': 'glasses'},
+                           {'indices': [134, 139], 'text': 'geek'}],
+              'symbols': [],
+              'urls': [],
+              'user_mentions': [{'id': 824881,
+                                 'id_str': '824881',
+                                 'indices': [3, 11],
+                                 'name': "Luisito '#ImBack' GyG 🇲🇽⚽",
+                                 'screen_name': 'LuisGyG'},
+                                {'id': 4883803745,
+                                 'id_str': '4883803745',
+                                 'indices': [64, 76],
+                                 'name': 'Motorola de México',
+                                 'screen_name': 'Motorola_MX'}]},
+ 'favorite_count': 0,
+ 'favorited': False,
+ 'geo': None,
+ 'id': 1018178822087192581,
+ 'id_str': '1018178822087192581',
+ 'in_reply_to_screen_name': None,
+ 'in_reply_to_status_id': None,
+ 'in_reply_to_status_id_str': None,
+ 'in_reply_to_user_id': None,
+ 'in_reply_to_user_id_str': None,
+ 'is_quote_status': False,
+ 'lang': 'es',
+ 'metadata': {'iso_language_code': 'es', 'result_type': 'recent'},
+ 'place': None,
+ 'retweet_count': 1,
+ 'retweeted': False,
+ 'retweeted_status': {'contributors': None,
+                      'coordinates': None,
+                      'created_at': 'Sat Jul 14 16:40:41 +0000 2018',
+                      'entities': {'hashtags': [{'indices': [64, 75],
+                                                 'text': 'motoz3play'},
+                                                {'indices': [99, 111],
+                                                 'text': 'electronics'}],
+                                   'symbols': [],
+                                   'urls': [{'display_url': 'twitter.com/i/web/status/1…',
+                                             'expanded_url': 'https://twitter.com/i/web/status/1018173447581720576',
+                                             'indices': [113, 136],
+                                             'url': 'https://t.co/8jqvWUPc5c'}],
+                                   'user_mentions': [{'id': 4883803745,
+                                                      'id_str': '4883803745',
+                                                      'indices': [51, 63],
+                                                      'name': 'Motorola de '
+                                                              'México',
+                                                      'screen_name': 'Motorola_MX'}]},
+                      'favorite_count': 5,
+                      'favorited': False,
+                      'geo': None,
+                      'id': 1018173447581720576,
+                      'id_str': '1018173447581720576',
+                      'in_reply_to_screen_name': None,
+                      'in_reply_to_status_id': None,
+                      'in_reply_to_status_id_str': None,
+                      'in_reply_to_user_id': None,
+                      'in_reply_to_user_id_str': None,
+                      'is_quote_status': False,
+                      'lang': 'es',
+                      'metadata': {'iso_language_code': 'es',
+                                   'result_type': 'recent'},
+                      'place': None,
+                      'possibly_sensitive': False,
+                      'retweet_count': 1,
+                      'retweeted': False,
+                      'source': '<a href="https://ifttt.com" '
+                                'rel="nofollow">IFTTT</a>',
+                      'text': 'Hoy toca switch de teléfono y me estaré mudando '
+                              'al @motorola_mx #motoz3play Les cuento. • • • • '
+                              '• \n'
+                              '#electronics… https://t.co/8jqvWUPc5c',
+                      'truncated': True,
+                      'user': {'contributors_enabled': False,
+                               'created_at': 'Fri Mar 09 05:40:17 +0000 2007',
+                               'default_profile': False,
+                               'default_profile_image': False,
+                               'description': 'El Fanático de los Gadgets. '
+                                              '📺📱📷🔊🎮\n'
+                                              'Conferencista sobre '
+                                              'tendencias.\n'
+                                              'Blogger. \n'
+                                              'Contrataciones y contacto: '
+                                              'contacto@luisgyg.com.',
+                               'entities': {'description': {'urls': []},
+                                            'url': {'urls': [{'display_url': 'luisgyg.com',
+                                                              'expanded_url': 'http://www.luisgyg.com',
+                                                              'indices': [0,
+                                                                          23],
+                                                              'url': 'https://t.co/ZgFJDzRhkD'}]}},
+                               'favourites_count': 3989,
+                               'follow_request_sent': False,
+                               'followers_count': 64080,
+                               'following': False,
+                               'friends_count': 1107,
+                               'geo_enabled': True,
+                               'has_extended_profile': True,
+                               'id': 824881,
+                               'id_str': '824881',
+                               'is_translation_enabled': False,
+                               'is_translator': False,
+                               'lang': 'es',
+                               'listed_count': 1515,
+                               'location': 'México',
+                               'name': "Luisito '#ImBack' GyG 🇲🇽⚽",
+                               'notifications': False,
+                               'profile_background_color': '131516',
+                               'profile_background_image_url': 'http://abs.twimg.com/images/themes/theme14/bg.gif',
+                               'profile_background_image_url_https': 'https://abs.twimg.com/images/themes/theme14/bg.gif',
+                               'profile_background_tile': True,
+                               'profile_banner_url': 'https://pbs.twimg.com/profile_banners/824881/1530210899',
+                               'profile_image_url': 'http://pbs.twimg.com/profile_images/1012403930997780481/foIo_8sD_normal.jpg',
+                               'profile_image_url_https': 'https://pbs.twimg.com/profile_images/1012403930997780481/foIo_8sD_normal.jpg',
+                               'profile_link_color': 'FF0000',
+                               'profile_sidebar_border_color': 'FFFFFF',
+                               'profile_sidebar_fill_color': 'EFEFEF',
+                               'profile_text_color': '333333',
+                               'profile_use_background_image': True,
+                               'protected': False,
+                               'screen_name': 'LuisGyG',
+                               'statuses_count': 92668,
+                               'time_zone': None,
+                               'translator_type': 'regular',
+                               'url': 'https://t.co/ZgFJDzRhkD',
+                               'utc_offset': None,
+                               'verified': True}},
+ 'source': '<a href="http://twitter.com/download/android" '
+           'rel="nofollow">Twitter for Android</a>',
+ 'text': 'RT @LuisGyG: Hoy toca switch de teléfono y me estaré mudando al '
+         '@motorola_mx #motoz3play Les cuento. • • • • • \n'
+         '#electronics #glasses #geek…',
+ 'truncated': False,
+ 'user': {'contributors_enabled': False,
+          'created_at': 'Mon Jan 02 22:18:36 +0000 2012',
+          'default_profile': True,
+          'default_profile_image': False,
+          'description': 'Simpre corriendo con el corazón x delante,  el '
+                         'coraje empujando, llegando a la meta hasta el ultimo '
+                         'aliento, la satisfacción de llegar. Preparandome '
+                         'ultra trail',
+          'entities': {'description': {'urls': []}},
+          'favourites_count': 1034,
+          'follow_request_sent': False,
+          'followers_count': 48,
+          'following': False,
+          'friends_count': 229,
+          'geo_enabled': False,
+          'has_extended_profile': True,
+          'id': 453415076,
+          'id_str': '453415076',
+          'is_translation_enabled': False,
+          'is_translator': False,
+          'lang': 'es',
+          'listed_count': 0,
+          'location': 'Nicolás Romero, México',
+          'name': 'Hunter Sephiroth',
+          'notifications': False,
+          'profile_background_color': 'C0DEED',
+          'profile_background_image_url': 'http://abs.twimg.com/images/themes/theme1/bg.png',
+          'profile_background_image_url_https': 'https://abs.twimg.com/images/themes/theme1/bg.png',
+          'profile_background_tile': False,
+          'profile_banner_url': 'https://pbs.twimg.com/profile_banners/453415076/1505333131',
+          'profile_image_url': 'http://pbs.twimg.com/profile_images/983326797113823232/e57SjsdS_normal.jpg',
+          'profile_image_url_https': 'https://pbs.twimg.com/profile_images/983326797113823232/e57SjsdS_normal.jpg',
+          'profile_link_color': '1DA1F2',
+          'profile_sidebar_border_color': 'C0DEED',
+          'profile_sidebar_fill_color': 'DDEEF6',
+          'profile_text_color': '333333',
+          'profile_use_background_image': True,
+          'protected': False,
+          'screen_name': 'Huntersephiroth',
+          'statuses_count': 819,
+          'time_zone': None,
+          'translator_type': 'none',
+          'url': None,
+          'utc_offset': None,
+          'verified': False}}
+
+</code></pre>
+      </p>
+      <p>All tweets have this type of content in general,  but the details may vary depending on various things, such as whether it is an  original tweet or a retweet. Retweets include a 'retweeted_status' parameter  which contains all of the information about the original tweet which was  retweeted. Other differences may be whether the tweet is geolocated with a  latitude and longitude of the user's location, and so on. </p>
+      <p>One of the Twitter datasets we will be working with was created using the Twitter Search API and searching on the hashtags 'nerd'. The other Twitter dataset was created using the Twitter Streaming API and hashtag 'climatechange'. Tweets gathered using the Search API were collected every 15 minutes and saved to a file. After two weeks the files were processed to remove duplicate tweets and combined into a single file. Duplicate tweets are an artifact of requesting the maximum number of tweets for each 15 minute epoch. Twitter limits the Search API to 100 tweets per 15 minute epoch. They post 150 in their documentation but we have observed it to be 100.</p>
+      <p>4.3 Wildfire Historical Dataset</p>
+      <p>4.3.1 TBD</p>
+      <p>&nbsp;</p>
+<p></p>
+    </div>
+  </div>
+  <br>
+  <hr>
+  <div class="row">
+    <div class="text-center col-lg-6 offset-lg-3">
+      <h4>--</h4>
+      <p>Copyright &copy; 2019 XSEDE</p>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="assets/js/prism_coy/prism.js"></script> 
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="assets/js/jquery-3.2.1.min.js"></script> 
+
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<script src="assets/js/popper.min.js"></script> 
+<script src="assets/js/bootstrap-4.0.0.js"></script>
+</body>
+</html>

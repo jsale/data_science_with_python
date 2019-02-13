@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 3: Data Forms and Data Structures - XSEDE Tutorial</title>
+<!-- Bootstrap -->
+<link href="assets/css/bootstrap-4.0.0.css" rel="stylesheet">
+<link href="assets/css/prism_coy/prism.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <a class="navbar-brand" href="#">Data Science With Python</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active"> <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a> </li>
+      <li class="nav-item"> <a class="nav-link" href="https://www.xsede.org">XSEDE</a> </li>
+      <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Lessons </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown"> <a class="dropdown-item" href="1.html">Lesson 1</a> <a class="dropdown-item" href="2.html">Lesson 2</a> <a class="dropdown-item" href="3.html">Lesson 3</a> <a class="dropdown-item" href="4.html">Lesson 4</a> <a class="dropdown-item" href="5.html">Lesson 5</a> <a class="dropdown-item" href="6.html">Lesson 6</a> <a class="dropdown-item" href="7.html">Lesson 7</a> <a class="dropdown-item" href="8.html">Lesson 8</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#"></a> </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="jumbotron jumbotron-fluid text-center">
+  <h1 class="display-4">Data Science with Python</h1>
+  <p class="lead">Working with large datasets using Python, Pandas, Matplotlib, and other data science tools.</p>
+  <hr class="my-4">
+</div>
+<div class="container">
+  <div class="row text-left">
+    <div class="col-lg-12 offset-lg-0">
+      <h1>Lesson 3: Data Forms and Data Structures</h1>
+      <h3>After these lessons you will be able to:      </h3>
+      <ul>
+        <li>List different forms of data</li>
+        <li>Describe the datasets used in these lessons</li>
+        <li>List some of the commonly-used tools for accessing, importing and manipulating data            </li>
+      </ul>
+      <p>For These Lessons You Will Need...</p>
+      <ul>
+        <li>Python 2.7 or later</li>
+        <li>The following packages:</li>
+        <li>tweepy </li>
+        <li>pandas </li>
+        <li>datetime </li>
+        <li>json</li>
+        <li>(more tbd)</li>
+      </ul>
+      <p>These lessons are supported by the content at  the following Github repository: </p>
+      <p><a href="https://github.com/jsale/data_science_with_python">https://github.com/jsale/data_science_with_python</a></p>
+      <p>&nbsp;</p>
+      <h2>3.1. Different Forms of Data</h2>
+      <p>Data come in many different forms, formats,  sizes, shapes and conduits.   Understanding the structure of data that you will be working with will  facilitate your choice of tools needed to do that work. </p>
+      <p>Like the unhappy families of Tolstoy's famous  quotation, every heterogeneous dataset is heterogeneous in its own way.  Some datasets are potentially hierarchical  aggregates of multiple sub-datasets (each of which might more be regular in  structure), which are related to each other in meaningful ways.  Some represent data that are defined on an  irregular or complex geometry, such as an unstructured mesh, an underlying  network, or an inhomogeneous sampling of points in space.  Some are regularly structured tables of  observations, but where variables being observed are of different type or  structure (see tabular data below for a fuller discussion).  </p>
+      <p>As a result, there is no &quot;one size fits  all&quot; data structure for capturing this diversity of structures, although  there are commonly recurring types of structures (hierarchical collections,  meshes, networks, tables, etc.) and associated tools for managing them.  Identifying the types of heterogeneity in  data, and the interactions among its elements, is a first step in pinpointing  useful tools for data processing.</p>
+      <h3>3.1.1 Regular vs. Irregular Data</h3>
+      <p>Scientific data are often regular in the structure,  and can be efficiently represented with multidimensional arrays.  Common examples include the 3-dimensional  coordinates of every particle in a system (represented, e.g., as an N x 3 array  of floating point numbers), a set of data relating measurements of an  independent and dependent variable (represented as an N x 2 array), or a  continuous field discretized into voxels in a 3-dimensional volume (represented  as an Nx x Ny x Nz array).</p>
+      <h3>3.1.2 Array Data</h3>
+      <p>Numpy arrays ...</p>
+      <h3>3.1.3 Tabular Data</h3>
+      <p>[Pandas series and dataframes] An important class of heterogeneous data,  alluded to above, are tabular data.   These are two-dimensional datasets of the sort found in spreadsheets,  with a set of rows and columns.   While  nominally regular in structure, tabular data can take on more complex structures. For example, a canonical form of tabular data -- known in  some circles as &quot;tidy&quot; data. There are three interrelated rules which make a dataset tidy:</p>
+      <ol>
+        <li>Each variable must have its own column.</li>
+        <li>Each observation must have its own row.</li>
+        <li>Each value must have its own cell.</li>
+      </ol>
+      <p>We will not go into further detail about 'tidy' data, but you can learn more at ??. </p>
+      <p>The simplistic 'unconnected' nature of tabular data is why it is often contrasted with Relational data, which we discuss next.</p>
+      <h3>3.1.4 Relational Data</h3>
+      <p>Relational data, at least informally here, are  the sort found in relational databases, involving a collection of tables (as in  tabular data, above) that are linked to each other through one or ore shared  keys in the tables.  </p>
+      <h3>3.1.5 &quot;Big&quot; Data</h3>
+      <p>Whether you are working with 'big' data or not is often difficult to determine. Often, issues such as whether you are memory bound or cpu bound impacts such a determination? This means you are working with data that is either too large to load into a reasonable amout of memory or too large to process within a reasonable amount of time on a typical system. In the past, a few gigabytes was considered alot of data. Now, most computers can handle gigabytes of data without too much difficulty. Challenges begin to emerge when working with terabytes or petabytes of data on a daily basis. Simply moving data from one system to another can be a vyer difficult task.      </p>
+      <h3>3.1.6 Image Data</h3>
+      <p>Image data is becoming more common in data science applications. There are a wide range of image formats, resolutions, color depths to work with. Processing images is often a task for matrix math and linear algebra. Image data is based on a 'raster' format of rows and columns of pixels. Individual pixel color can be 8-bit grayscale or 32-bit RGBA (red, green, blue, alpha). Pixels have a hue, saturation, and intensity measures. Image processing often includes things such as edge detection, de-blurring, pattern recognition, compression, noise reduction, segmentation, differencing,  histograms, and much more.  </p>
+      <h3>3.1.7 Textual Data</h3>
+      <p>Textual data can be found in many sources, books, news articles, social media, historical archives, etc.. Textual data consists of ascii character strings organized in rows ending with line breaks. Computational linguists work with large text corpi consisting of terabytes of data.      </p>
+      <h3>3.1.8 Streaming Data</h3>
+      <p>Streaming data is more of a reference to the state in which data is being managed. Streaming data can be text or numeric. Twitter data is an example of streaming data and can be accessed with the Twitter Streaming API. Weather data often streams live from distributed weather sensor networks all over the world. Often, streaming data is so voluminous that it gets processed and filtered before it is saved and the original data is discarded. </p>
+      <h3>3.1.9 Remote Data</h3>
+      <p>TBD</p>
+      <h3>3.1.10 Hierarchical Data</h3>
+      <p>Hierarchical data is distinguished by having a more complex, parent-child, type of relationship between the data. JSON or XML formats are examples. Uncompressed, these text formats use more memory but they offer the advantage of conforming to a format which makes it easy for analytics tools to parse them. </p>
+      <h3>&nbsp;</h3>
+    </div>
+  </div>
+  <br>
+  <hr>
+  <div class="row">
+    <div class="text-center col-lg-6 offset-lg-3">
+      <h4>--</h4>
+      <p>Copyright &copy; 2019 XSEDE</p>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="assets/js/prism_coy/prism.js"></script> 
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="assets/js/jquery-3.2.1.min.js"></script> 
+
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<script src="assets/js/popper.min.js"></script> 
+<script src="assets/js/bootstrap-4.0.0.js"></script>
+</body>
+</html>

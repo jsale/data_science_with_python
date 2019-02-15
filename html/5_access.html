@@ -35,9 +35,9 @@
       <h1>Lesson 5: Data Access and Input</h1>
       <h3>After these lessons you will be able to:      </h3>
       <ul>
-      <li> Explain what machine learning is and why it is part of the repertoire of data science methods</li>
-      <li>Configure machine learning tools and environments</li>
-        <li>Apply standard machine learning methods to create a model which performs image recognition of flower types using the <a href="http://image-net.org/explore.php?wnid=n11669921" target="new">flower image database from ImageNet</a>.</li>
+      <li> Explain the basic process which underlies data access and input</li>
+      <li>List some of the commonly-used tools for accessing and importing data</li>
+        <li>Demonstrate how to use pandas dataframes for data exploration</li>
       </ul>
       <p>For This Lesson You Will Need...</p>
       <ul>
@@ -45,19 +45,59 @@
         <li>The following packages:
           <ul>
             <li>pandas </li>
-            <li></li>
+            <li>sqlalchemy</li>
+            <li>glob</li>
+            <li>os</li>
           </ul>
         </li>
       </ul>
       <p>These lessons are supported by the content at  the following Github repository: </p>
       <p><a href="https://github.com/jsale/data_science_with_python">https://github.com/jsale/data_science_with_python</a></p>
-      <h2>Series and Dataframes in pandas (and relation to numpy arrays)</h2>
-      <p>&nbsp;</p>
-      <h2>Dataframes for baseball data</h2>
-      <p>&nbsp;</p>
-      <h2>Building a sql database from dataframes</h2>
+      <h2>5.1 Series and Dataframes in Pandas (and relation to numpy arrays)</h2>
+      <p>TBD</p>
+      <h2>5.2 Dataframes for baseball data</h2>
+      <p>Our first step, once we have downloaded the  data, is to identify the location of the sub-directory containing the core  CSV-format files. In this example we put them in a 'baseballdatabank/core/'  folder relative to our scripts. </p>
+      <h3>5.2.1 Import Packages      </h3>
+      <p>To follow along with these lessons, you will  need to import these packages:</p>
       <div class="col-lg-3 offset-lg-0">
-        <pre><code class="language-python">
+        <pre><code class="language-python">import pandas as pd
+import glob, os
+from sqlalchemy import create_engine</code></pre>
+      </div>
+      <h3>&nbsp;</h3>
+      <h3>5.2.2 Import Data into Pandas DataFrames</h3>
+      <p>Next, we define a function to read all of the  files into a single pandas dataframe, dfs, and then run it on the above folder. </p>
+      <pre><code class="language-python">def read_all_databank_core_csv(directory):
+    """
+    read all csv files in the specified baseball databank directory and
+    populate a dictionary storing each of the tables keyed to its name
+    """
+    dfs = {}
+    files = glob.glob('{}/*.csv'.format(directory))
+    for f in files:
+        d, name = os.path.split(f)
+        table = os.path.splitext(name)[0]
+        df = pd.read_csv(f)
+        dfs[table] = df
+    return dfs
+
+bbdfs = read_all_databank_core_csv('baseballdatabank/core')
+</code></pre>
+      <p>To keep things simple, we will extract three  primary tables from our dataframe, 'Batting', 'Pitching', and 'Teams.' </p>
+      <pre><code class="language-python"># extract a few for further processing
+batting = bbdfs['Batting']
+pitching = bbdfs['Pitching']
+teams = bbdfs['Teams']</code></pre>
+      <h3>5.2.3 Let's Take a Peek</h3>
+      <p>Run the following command to view the first 5  rows of data from the 'Batting' table:</p>
+      <pre><code class="language-python">batting.head()</code></pre>
+      <p>We see that, by default, a Jupyter Notebook  does not display all columns of data with the head() command if there are too  many columns to include is a single cell width. Notice the '...' between the  '2B' and 'SB' columns. We can list the columns for one of our tables with  something like:</p>
+      <pre><code class="language-python">pitching.columns</code></pre>
+      <p>Try this with the batting and teams dataframes. </p>
+      <h2>5.3 Building a sql database from dataframes</h2>
+      <p>It can be convenient to work with a compact SQL database for some of the initial data exploration. In this example we demonstrate how to import the baseball data into a SQLite database and perform some simple queries. </p>
+      <div class="col-lg-3 offset-lg-0">
+      <pre><code class="language-python">
 def write_all_tables_to_sqlite(dfs, sql_filename):
     engine = create_engine('sqlite:///{}'.format(sql_filename))
     for table, df in dfs.items():
@@ -72,13 +112,16 @@ except FileNotFoundError:
 write_all_tables_to_sqlite(bbdfs, sqlite_filename)
 </code></pre></div>
       <p>&nbsp;</p>
-      <h2>Cleaning messy data (wildfires)</h2>
-      <p>&nbsp;</p>
-      <h2>Twitter API</h2>
-      <h3>4.2.1 Get Authenticated For the Twitter API</h3>
+      <h2>5.4 Cleaning messy data (wildfires)</h2>
+      <p>TBD</p>
+      <h2>5.5 Twitter API</h2>
+      <p>Accessing Twitter data requires using the Twitter API which means you must have a Twitter account which is authenticated to use the Twitter API. This is a straightforward process which we briefly walk through in the next steps. </p>
+      <h3>5.5.1 Get Authenticated For the Twitter API</h3>
+      <p>The first step is to authenticate your account which you do by following the steps at the link below:</p>
       <p><a href="https://developer.twitter.com/en/docs/basics/authentication/guides/access-tokens.html">https://developer.twitter.com/en/docs/basics/authentication/guides/access-tokens.html</a></p>
       <h3><br>
-        4.2.2 Create a Twitter Application</h3>
+        5.5.2 Create a Twitter Application</h3>
+      <p>You must create a Twitter application to store your authentication keys and tokens. Follow the steps at the link below:</p>
       <p><a href="https://developer.twitter.com/en/docs/basics/apps">https://developer.twitter.com/en/docs/basics/apps</a></p>
       <p>Once you have created your application and have  your authentication keys and tokens, you will need to install the tweepy  package in Python. The command you use depends on how you have configured your  Python environment. If you are using Anaconda and prefer to install packages  with conda, use something like the following command: </p>
       <pre><code class="language-bash">conda install -c conda-forge tweepy </code></pre>
@@ -87,11 +130,10 @@ write_all_tables_to_sqlite(bbdfs, sqlite_filename)
       <pre><code class="language-bash">pip install tweepy </code></pre>
       <p>A similar process applies for any other package  you might find you need. Learn more about Python packages in the <a href="https://cvw.cac.cornell.edu/pythonintro/">CVW Intro  to Python tutorial</a>.</p>
       <h3><br>
-        4.2.3 Using the Twitter Streaming API</h3>
+        5.5.3 Using the Twitter Streaming API</h3>
       <p>Most users of XSEDE systems already have  collected their Twitter data and simply want to analyze it, but we will walk  through a simple example of how to collect streaming tweet data that is  collected using a filter, such as containing a specific hashtag. </p>
-      <p>Here is a simple example of how to collect  tweets with hashtag #nerd, print the tweet data and save it to a file. </p>
-      <p><a href="https://drive.google.com/open?id=1WpcYPs-yXUOAEqeLjgJaAgzVLiXIlrs9">https://drive.google.com/open?id=1WpcYPs-yXUOAEqeLjgJaAgzVLiXIlrs9</a></p>
-      <p>
+      <p>The code below is a simple example of how to collect  tweets with hashtag #nerd, print the tweet data and save it to a file. You cann copy the code below or download the Python script here:</p>
+      <p><a href="https://drive.google.com/open?id=1WpcYPs-yXUOAEqeLjgJaAgzVLiXIlrs9">https://drive.google.com/open?id=1WpcYPs-yXUOAEqeLjgJaAgzVLiXIlrs9</a>      </p>
       <pre><code class="language-python"># -*- coding: utf-8 -*-
 """
 Created on Sat Oct 27 08:59:27 2018
@@ -148,11 +190,9 @@ if __name__ == '__main__':
     stream = Stream(auth, l)
     stream.filter(track=['nerd'])
 file_out.close()</code></pre>
-      </p>
-      <h3></h3>
-      <p>&nbsp;</p>
-      <h2>Other short examples?</h2>
-      <p>&nbsp;</p>
+      <p>The above script will save the Twitter data in a text file using the JSON (JavaScript Object Notation) format. For the remaining lessons we will be using two datasets collected in a similar manner as the script shown above. </p>
+      <h2>5.6 Other short examples?</h2>
+      <p>TBD</p>
       <p></p>
 <p></p>
     </div>

@@ -59,45 +59,34 @@
       <h3>4.1.1 Download the Data</h3>
       <p>Our first set of practical examples  will use the Lahman Baseball Database (LBD). You&nbsp; can learn more about the LBD  and download the data here:</p>
       <p><u><a href="http://www.seanlahman.com/baseball-archive/statistics/">http://www.seanlahman.com/baseball-archive/statistics/</a></u></p>
-      <h3>4.1.2 Import Packages</h3>
-      <p>Our first step, once we have downloaded the  data, is to identify the location of the sub-directory containing the core  CSV-format files. In this example we put them in a 'baseballdatabank/core/'  folder relative to our scripts. </p>
-      <p>To follow along with these lessons, you will  need to import these packages:</p>
-      <div class="col-lg-3 offset-lg-0"><pre><code class="language-python">import pandas as pd
-import glob, os
-import seaborn as sns
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-from sqlalchemy import create_engine</code></pre></div>
-      <h3>4.1.3 Import Data into Pandas DataFrames</h3>
-      <p>Next, we define a function to read all of the  files into a single pandas dataframe, dfs, and then run it on the above folder. </p>
-      <pre><code class="language-python">def read_all_databank_core_csv(directory):
-    """
-    read all csv files in the specified baseball databank directory and
-    populate a dictionary storing each of the tables keyed to its name
-    """
-    dfs = {}
-    files = glob.glob('{}/*.csv'.format(directory))
-    for f in files:
-        d, name = os.path.split(f)
-        table = os.path.splitext(name)[0]
-        df = pd.read_csv(f)
-        dfs[table] = df
-    return dfs
-
-bbdfs = read_all_databank_core_csv('baseballdatabank/core')
-</code></pre>
-      <p>To keep things simple, we will extract three  primary tables from our dataframe, 'Batting', 'Pitching', and 'Teams.' </p>
-      <pre><code class="language-python"># extract a few for further processing
-batting = bbdfs['Batting']
-pitching = bbdfs['Pitching']
-teams = bbdfs['Teams']</code></pre>
-      <h3>4.1.4 Let's Take a Peek</h3>
-      <p>Run the following command to view the first 5  rows of data from the 'Batting' table:</p>
-      <pre><code class="language-python">batting.head()</code></pre>
-      <p>We see that, by default, a Jupyter Notebook  does not display all columns of data with the head() command if there are too  many columns to include is a single cell width. Notice the '...' between the  '2B' and 'SB' columns. We can list the columns for one of our tables with  something like:</p>
-      <pre><code class="language-python">pitching.columns</code></pre>
-      <h3>&nbsp;</h3>
-      <h2>4.2 Twitter</h2>
+      <p>When you have downloaded the data, you will find it contains two folders, 'core' and 'upstream'. The 'core' folder contains the databank itself, and 'upstream' contains files used to construct the databank. The 'core' folder contains a long list of data files in a CSV (Comma-Separated Values) format which This type of data structure is referred to as a 'flat file' database. We list the files below:
+      <ul>
+        <li>Batting</li>
+        <li>Pitching</li>
+        <li>Fielding</li>
+        <li>All-Star</li>
+        <li>Hall of Fame</li>
+        <li>Managers</li>
+        <li>Teams</li>
+        <li>BattingPost</li>
+        <li>PitchingPost</li>
+        <li>TeamFranchises</li>
+        <li>FieldingOF</li>
+        <li>ManagersHalf</li>
+        <li>TeamsHalf</li>
+        <li>Salaries</li>
+        <li>SeriesPost</li>
+        <li>AwardsManagers</li>
+        <li>AwardsPlayers</li>
+        <li>AwardsShareManagers</li>
+        <li>AwardsSharePlayers</li>
+        <li>FieldingPost </li>
+        <li>Appearances</li>
+        <li>Schools</li>
+        <li>SchoolsPlayers</li>
+      </ul>
+      <p>In subsequent lessons we will manipulate this database in such a way as to make it more amanable to data science analytics. We cannot explore the entire database in great detail, but we will perform some basic analysis on a subset of the database. </p>
+<h2>4.2 Twitter</h2>
       <p>You are probably already familiar with the  Twitter social network. Twitter is a network built on a messaging system which  allows people to send and receive messages consisting of fewer than 280  characters (and attached images) and other limited types of metadata. It has  been used effectively as a near real-time communications tool in numerous  global social events. Perhaps its greatest strength is that Twitter also  provides an API which allows anyone to collect large amounts of data and  perform a wide range of analyses to better understand these networks. This strength  can also be a weakness, introducing vulnerabilities to 'bots' or 'state-backed'  accounts which are used to spread disinformation in critical ways. </p>
       <p>In these lessons, you will learn how to use the  Twitter Search API and the Streaming API to collect tweets using the Python  Tweepy library. Then, in Lesson 5, you will perform graph network analysis using networkx, and you  will learn how to export to other graph network analysis and visualization  applications such as Gephi, Neo4j, and GraphX. </p>
       <p>Before you can start collecting Twitter data,  you will need to create a developer account, get authenticated, and create a  Twitter application. In Lesson 5 we provide a brief description of the process with links to  more information. To get an idea how much data is in a single tweet, below is an example of a tweet in JSON format: </p>
@@ -289,8 +278,8 @@ teams = bbdfs['Teams']</code></pre>
       </p>
       <p>All tweets have this type of content in general,  but the details may vary depending on various things, such as whether it is an  original tweet or a retweet. Retweets include a 'retweeted_status' parameter  which contains all of the information about the original tweet which was  retweeted. Other differences may be whether the tweet is geolocated with a  latitude and longitude of the user's location, and so on. </p>
       <p>One of the Twitter datasets we will be working with was created using the Twitter Search API and searching on the hashtags 'nerd'. The other Twitter dataset was created using the Twitter Streaming API and hashtag 'climatechange'. Tweets gathered using the Search API were collected every 15 minutes and saved to a file. After two weeks the files were processed to remove duplicate tweets and combined into a single file. Duplicate tweets are an artifact of requesting the maximum number of tweets for each 15 minute epoch. Twitter limits the Search API to 100 tweets per 15 minute epoch. They post 150 in their documentation but we have observed it to be 100.</p>
-      <p>4.3 Wildfire Historical Dataset</p>
-      <p>4.3.1 TBD</p>
+      <h2>4.3 Wildfire Historical Dataset</h2>
+      <h3>4.3.1 TBD</h3>
       <p>&nbsp;</p>
 <p></p>
     </div>

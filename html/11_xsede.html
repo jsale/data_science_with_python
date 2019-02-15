@@ -42,7 +42,7 @@
 <div class="container">
   <div class="row text-left">
     <div class="col-lg-12 offset-lg-0">
-      <h1>Lesson 8: Using XSEDE Resources For Data Science</h1>
+      <h1>Lesson 11: Using XSEDE Resources For Data Science</h1>
       <h3>After these lessons you will be able to:      </h3>
 		<ul>
 		  <li>Copy your data onto XSEDE resources in multiple ways</li>
@@ -58,15 +58,15 @@
       </ul>
       <p>These lessons are supported by the content at  the following Github repository: </p>
       <p><a href="https://github.com/jsale/data_science_with_python">https://github.com/jsale/data_science_with_python</a></p>
-      <h2>8.1 Getting data onto XSEDE resources</h2>
+      <h2>11.1 Getting data onto XSEDE resources</h2>
       <p>There are several ways to get data onto XSEDE systems, and there are already a number of tutorials you may find useful to help in this regard. <a href="https://cvw.cac.cornell.edu/DataTransfer/" target="new">Explore this CVW tutorial on Data Transfer</a>.      </p>
       <h4>SCP and SFTP      </h4>
       <p>SCP ('secure copy') and SFTP ('secure file transfer protocol') are the most common ways to transfer relatively small amounts of data, typically up to 1 or 2 Gb in size. Anything larger can take so long that the increased risk of the transfer being interrupted for one reason or another makes this a less practical option for truly massive amounts of data. </p>
       <h4>Globus</h4>
       <p>Globus is probably the data transfer tool of choice for transferring large amounts of data, especially if you want to start a transfer and  'walk away' so to speak. With scp and ftp you need to be sure the connection does not get interrupted in one way or another. With globus online you can submit your data transfer 'job' and logout and Globus does the rest. For this you need to install an application on your local system to serve as an authenticated client and you will need to authenticate remote endpoints such as your XSEDE systems. </p>
-      <h2>8.2 Performance considerations</h2>
+      <h2>11.2 Performance considerations</h2>
       <p>&nbsp;</p>
-      <h2>8.3 Parallel file systems</h2>
+      <h2>11.3 Parallel file systems</h2>
       <p>We will not go into great detail regarding parallel file systems and file i/o on XSEDE systems, but it is important for you to be aware of some of the basic issues related to using parallel file systems so you do not cause problems for the other users of the system. An excellent place to start learing about parallel file systems is the <a href="https://cvw.cac.cornell.edu/ParallelIO/" target="new">CVW tutorial on Parallel I/O</a> developed by Steve Lantz.      </p>
       <p>On Comet the Lustre scratch file system is /oasis/scratch/comet/$USER/temp_project, and the  Lustre projects file system is /oasis/projects/nsf.</p>
       <p>On Stampede 2, all three file systems, /home, /scratch, and /work are Lustre parallel file systems. </p>
@@ -85,36 +85,36 @@
         <li>Avoid Accessing Executables on Lustre Filesystems<br>
     </li>
       </ul>
-      <h2>8.4 Environments and packages</h2>
+      <h2>11.4 Environments and packages</h2>
       <p>Most XSEDE systems include Python 2 and Python 3. Python 2.7 is typically the default version. <a href="https://portal.xsede.org/software#/" target="new">XSEDE has a page listing software on the various sytems</a>. However, the best way to see what modules are available on any particular XSEDE system is to type 'module list'. <a href="http://education.sdsc.edu/viz_webinar_2018/xsede_available_modules.html" target="new">Here is an example of what to expect from XSEDE's Stampede 2, Comet, and Bridges systems</a>. Note the variation from system to system. For example, Bridges offers several different modules for both Python 2 and 3, whereas it appears that Comet only offers Python 2 and some Python variants for bioinformatics (biopython and bx-python). These lists are actually stored in text files on the local systems, for example /opt/apps/intel17/impi17_0/modulefiles on Stampede 2.   </p>
       <p>If you are unsure which version of Python is your default, the 'module list' command will list them when you first login.  On SDSC Comet, PSC Bridges, and TACC Stampede 2, Python 2.7 is probably your default. However, some systems offer several versions of Python. For example, PSC's Bridges includes </p>
       <p>If you would like Python 3 to be your default, you will need to unload Python 2 and load Python 3 and then issue the &quot;module save default&quot; command to set Python 3 as your default version. </p>
       <p>You can install packages specifically for your account with pip by issuing the usual installation commands for Python packages and including '--user'. For example, if you want to install matplotlib you would type:</p>
       <pre><code class="language-python">pip install matplotlib --user</code></pre>
-      <h3>8.4.1 SDSC Comet</h3>
+      <h3>11.4.1 SDSC Comet</h3>
       <p>Python 2 and 3 are available on SDSC Comet. Python 2.7 is the default version. You can now run Jupyter Notebooks with Python 3 on Comet. The script is available at:</p>
       <pre><code class="language-bash">/oasis/scratch/comet/apps/???</code></pre>
       <p>This script launches a Singularity container which then runs a Jupyter Notebook. This implementation allows you to modify either your environment or the Singularity container in order to configure your Python jobs in whichever way works best for you. </p>
-      <h3>8.4.2 TACC Stampede 2</h3>
+      <h3>11.4.2 TACC Stampede 2</h3>
       <p>Python 2 and 3 are available on Stampede 2, and you may also use the TACC Visualization Portal to run Python 2 or 3 using Jupyter Notebooks. </p>
       <p>The Cornell Virtual Workshop includes an excellent tutorial on the <a href="https://cvw.cac.cornell.edu/Environment/" target="new">Stampede 2 Environment</a>, so we will not go into great detail here. Our focus will be as it relates to running Python and data science applications. </p>
       <p>TACC delivered a Python for HPC tutorial in 2015 which may be reviewed <a href="https://portal.tacc.utexas.edu/-/hpc-python" target="new">here</a>. </p>
       <p>You can generate a list of all software modules on Stampede 2 <a href="https://portal.tacc.utexas.edu/software" target="new">here</a>. </p>
-      <h3>8.4.3 PSC Bridges</h3>
+      <h3>11.4.3 PSC Bridges</h3>
       <p>Bridges supports several different versions of both Python 2 and 3. </p>
-      <h2>8.5 Training resources</h2>
+      <h2>11.5 Training resources</h2>
       <p>XSEDE offers a variety of resources for you to learn more about Python and data science. We include some of these options here. </p>
-      <h3>8.5.1 Cornell Virtual Workshop</h3>
+      <h3>11.5.1 Cornell Virtual Workshop</h3>
       <p>The Cornell Virtual Workshop includes two online tutorials, <a href="https://cvw.cac.cornell.edu/pythonintro/" target="new">Introduction to Python</a>, and <a href="https://cvw.cac.cornell.edu/python/" target="new">Python for High Performance</a>. If you are relatively new to Python then you will probably find these tutorials very useful to bring you up to speed for this tutorial. </p>
-      <h3>8.5.?? SciPy Conference</h3>
+      <h3>11.5.?? SciPy Conference</h3>
       <p>Each year the scientific community hosts the <a href="https://conference.scipy.org/" target="new">SciPy Conference</a> for scientists to share their work and offer professional development training in the form of workshops and tutorials. </p>
       <h3></h3>
-      <h3>8.5.?? Other Tutorials</h3>
+      <h3>11.5.?? Other Tutorials</h3>
       <p>You may also find instructional materials available on MOOCs such as Coursera and EdX useful. Coursera offers a 5-course specialization on Big Data developed by data scientists from SDSC, Drs. Ilkay Altintas and Amarnath Gupta. A Python for Data Science course is also offered on EdX developed by UCSD faculty. </p>
       <p>8.5.?? XSEDE Ticket System</p>
       <p>Often it is the case that another user has had similar issues and has posted to the XSEDE ticketing system. If you have a XUP account you can login to the system and search for related issues. We have found this to be very useful in particular with Python since it is a rapidly evolving resource within the many different XSEDE system environments. </p>
       <p>&nbsp;</p>
-      <h2>8.6 TACC Visualization Portal </h2>
+      <h2>11.6 TACC Visualization Portal </h2>
       <p>The TACC Visualization Portal provides users with access to Python either through a remote VNC session or through a Jupyter Notebook running in a browser. Your XSEDE allocation must include Stampede2 or Wrangler in order to use Jupyter Notebooks on the TVP.      Jupyter Notebooks on the TVP use whichever version of Python is part of your default module set. See section 8.4, Environments and Packages to learn how to make Python 3 your default version of Python on Stampede 2. </p>
       <p>&nbsp;</p>
       <p></p>

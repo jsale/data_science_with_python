@@ -42,7 +42,7 @@
 <div class="container">
   <div class="row text-left">
     <div class="col-lg-12 offset-lg-0">
-      <h1>Lesson 5: Statistics with Data</h1>
+      <h1>Lesson 8: Statistics with Data</h1>
       <h3>After these lessons you will be able to: </h3>
       <ul>
         <li>Explain the purpose of performing statistical analysis on data
@@ -61,10 +61,10 @@
       </ul>
       <p>These lessons are supported by the content at  the following Github repository: </p>
       <p><a href="https://github.com/jsale/data_science_with_python">https://github.com/jsale/data_science_with_python</a></p>
-      <h2>5.1: Analyzing Baseball Data
+      <h2>8.1: Analyzing Baseball Data
         </p>
       </h2>
-      <h3>5.1.1 Filtering the Data</h3>
+      <h3>8.1.1 Filtering the Data</h3>
       <p>Curiously, one of the greatest baseball  hitters of all time, Henry &ldquo;Hank&rdquo; Aaron, comes first in an alphabetical listing  by &lsquo;playerID&rsquo; of all MLB players so let&rsquo;s explore some of Hank Aaron&rsquo;s career  batting statistics. </p>
       <p>The LBD &lsquo;Batting&rsquo; table lists player stats by  year. This makes it easy to list a specific player&rsquo;s career stats by year;</p>
 	  <pre><code class="language-python">batting[batting.playerID=='aaronha01']</code></pre>
@@ -652,7 +652,7 @@
   </tbody>
 </table>
 	  <p>&nbsp;</p>
-<h3>5.1.2 Aggregating data (Hank Aaron's career batting statistics)¶</h3>
+<h3>8.1.2 Aggregating data (Hank Aaron's career batting statistics)¶</h3>
 <p>Suppose we want to aggregate Hank Aaron&rsquo;s  individual yearly statistics into single career totals. Pandas makes this easy:</p>
       <pre><code class="language-python">batting[batting.playerID=='aaronha01'].sum(numeric_only=True).drop(['yearID']).astype(int)</code></pre>
       <p>The results should resemble the list shown below:</p>
@@ -677,7 +677,7 @@ GIDP       328
 1B        2294
 dtype: int32</pre>
 	  <p>&nbsp;</p>
-	  <h3>5.1.3 Grouping Batting Data By Player</h3>
+	  <h3>8.1.3 Grouping Batting Data By Player</h3>
 	  <p>Next, let's perform some grouping with the pandas 'groupby' function to create a listing of players career batting totals. To calculate the totals we will use the sum() operation. </p>
 	  <pre><code class="language-python">pl_bat = batting.groupby('playerID').sum().reset_index()
 bbdfs['CareerBatting'] = pl_bat
@@ -834,7 +834,7 @@ pl_bat.head()</code></pre>
   </tbody>
 </table>	  
 <p>&nbsp;</p>
-<h3>5.1.4 Adding More Derived Data: The Slash Line (BA / OBP / SLG)</h3>
+<h3>8.1.4 Adding More Derived Data: The Slash Line (BA / OBP / SLG)</h3>
 <p>Next, </p>
 <pre><code class="language-python">pl_bat['BA']= pl_bat['H'] / pl_bat['AB']
 pl_bat['OBP'] = (pl_bat['H']+pl_bat['BB']+pl_bat['HBP']) / (pl_bat['AB']+pl_bat['BB']+pl_bat['HBP']+pl_bat['SF'])
@@ -992,7 +992,7 @@ pl_bat.head()</code></pre>
   </tbody>
 </table>
 <p>&nbsp;</p>
-<h3>5.1.4 Filtering Data Part 2: Top All-tTime Slugging Percentages (at least 100 AB)</h3>
+<h3>8.1.4 Filtering Data Part 2: Top All-tTime Slugging Percentages (at least 100 AB)</h3>
 <pre><code class="language-python">pl_bat[pl_bat.AB >= 100].sort_values(by='SLG', ascending=False).head(30)</code></pre>
 <p>The results should resemble the data shown below:</p>
 <table border="1" class="dataframe">
@@ -1747,7 +1747,7 @@ pl_bat.head()</code></pre>
 	<p></p>
 </table>
 	  <p>&nbsp;</p>
-	  <h3>5.1.5 Writing all the dataframes to a SQL database</h3>
+	  <h3>8.1.5 Writing all the dataframes to a SQL database</h3>
 	  <p>Next, we will define functions to write our dataframe to a SQL database. </p>
 	  <pre><code class="language-python">def write_all_tables_to_sqlite(dfs, sql_filename):
     engine = create_engine('sqlite:///{}'.format(sql_filename))
@@ -1762,7 +1762,7 @@ except FileNotFoundError:
     pass
 write_all_tables_to_sqlite(bbdfs, sqlite_filename)</code></pre>
 	  <p></p>
-	  <h3>5.1.6 Make SQL query to Baseball DB</h3>
+	  <h3>8.1.6 Make SQL query to Baseball DB</h3>
 	  <p>Finally, let's query our newly-created database to collect data on the top 'sluggers' in the history of baseball, and we will constrain our query to return data for only those players with more than 100 'At Bats' per year. </p>
 	  <pre><code class="language-python">engine = create_engine('sqlite:///bbdb.sqlite')
 
@@ -2522,7 +2522,7 @@ top_slugging</code></pre>
 	  <p></p>
 	  <p></p>
 	  <p></p>
-<h2>5.2 Twitter</h2>
+<h2>8.2 Twitter</h2>
       <p>TBD</p>
       <p>&nbsp;</p>
     </div>
